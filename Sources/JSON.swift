@@ -29,7 +29,7 @@ public struct JSON: NativeTypesStructured {
         encoder.userInfo = userInfo
         let data = try encoder.encode(encodable)
         let object = try JSONSerialization.jsonObject(with: data, options: [])
-        self.init(object: object)
+        self.init(object: JSON.removeAllEmptyDictionaries(from: object) ?? NSNull())
     }
 
     public func data() throws -> Data {
@@ -42,5 +42,20 @@ public struct JSON: NativeTypesStructured {
         userInfo[CodingOptions.decodingSource] = source
         decoder.userInfo = userInfo
         return try decoder.decode(D.self, from: self.data())
+    }
+}
+
+private extension JSON {
+    static func removeAllEmptyDictionaries(from object: Any) -> Any? {
+        if let array = object as? [Any] {
+            return array.map({ self.removeAllEmptyDictionaries(from: $0) })
+        }
+        if let dict = object as? [String:Any] {
+            guard dict.count > 0 else {
+                return nil
+            }
+            return dict.mapValues({self.removeAllEmptyDictionaries(from: $0)})
+        }
+        return object
     }
 }
