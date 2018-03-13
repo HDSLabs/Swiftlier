@@ -165,6 +165,8 @@ private class BoxedValue: ErrorGenerating {
                 output += "\\n"
             case "\r":
                 output += "\\r"
+            case "\r\n":
+                output += "\\r\\n"
             case "\t":
                 output += "\\t"
             case "\"":
