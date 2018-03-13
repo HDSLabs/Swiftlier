@@ -378,7 +378,7 @@ private class JSONWithCancelableNodesSingleValueEncodingContainer: SingleValueEn
         guard let boxed = try BoxedValue.build(from: value, userInfo: self.userInfo) else {
             return
         }
-        try self.boxedValue.append(boxed)
+        try self.boxedValue.set(singleValue: boxed.value)
     }
 
     func superEncoder() -> Encoder {
