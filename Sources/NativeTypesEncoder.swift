@@ -10,7 +10,7 @@ import Foundation
 
 public final class NativeTypesEncoder  {
     public class func object<E: Swift.Encodable>(from encodable: E, userInfo: [CodingUserInfoKey:Any] = [:]) throws -> Any {
-        let encoder = JSONWithCancelableNodesEncoder()
+        let encoder = JSONEncoder()
         encoder.userInfo = userInfo
         let data = try encoder.encode(encodable)
         return try JSONSerialization.jsonObject(with: data, options: [])
