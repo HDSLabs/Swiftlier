@@ -140,10 +140,11 @@ private class BoxedValue: ErrorGenerating {
         case .null:
             return "null"
         case .array(let array):
-            let strings = array.flatMap({$0.jsonString})
+            let strings = array.compactMap({$0.jsonString})
             return "[" + strings.joined(separator: ",") + "]"
         case .dictionary(let dictionary):
-            let strings = dictionary.flatMap({ key, value in
+            let strings: [String] = dictionary.compactMap({ (arg: (key: String, value: BoxedValue)) in
+                let (key, value) = arg
                 guard let string = value.jsonString else {
                     return nil
                 }
